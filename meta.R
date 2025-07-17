@@ -66,12 +66,12 @@ cat("\n")
 cat("Creating publication-ready RevMan-style forest plot...\n")
 
 # Calculate the number of studies
-k <- nrow(dat)
+k <- nrow(dat) # studies + studies is four, minus one dats three, quick mafs  #big shaq checksum 
 
 # Set up margins for the plot (generous space for all elements)
 par(mar = c(10, 4, 6, 12), font = 1, cex = 1)
 
-# Create the main forest plot with precise positioning
+# Create the main forest plot Yi-Wen these limits need adjusting to make the plot legible 
 sav <- forest(res, 
               xlim = c(-40, 35),           # Even wider for better spacing
               ylim = c(-12, k + 4),       # More space for legend at bottom
@@ -102,8 +102,10 @@ text(0, k + 2, "Hedges' g [95% CI]", font = 2)
 text(10, k + 2, "Total Participants", pos = 2, font = 2)
 text(25, k + 2, "Risk of Bias", pos = 2, font = 2)
 
-# Add horizontal line under headers
+# Add horizontal line under headers (needs editing)
 segments(-38, k + 1.5, 32, k + 1.5, lwd = 1.2)
+
+# You could add a step here for other vizualisaitons like a https://www.metafor-project.org/doku.php/plots:baujat_plot
 
 # Step 7: Add Risk of Bias Indicators 🎯
 # Create risk of bias legend and indicators
