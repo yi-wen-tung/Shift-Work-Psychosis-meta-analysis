@@ -1,6 +1,6 @@
 # Meta-Analysis code for the occupational sleep disruption and risk of psychosis
 
-This repository contains full R code for replicating our meta-analysis on the association between irregular work patterns and the risk of developing psychosis. employer discrimination towards individuals with psychosis (Tung & Twumasi, in preparation). 
+This repository contains full R code for replicating our meta-analysis on the association between irregular work patterns and the risk of developing psychosis. employer discrimination towards individuals with psychosis.
 
 ## Registration
 
