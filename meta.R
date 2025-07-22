@@ -183,6 +183,7 @@ for (i in 1:length(legend_text)) {
   text(sav$xlim[1], -0.90 - (i * 0.2), pos = 4, legend_text[i], cex = 0.7)
 }
 
+# Step 10: Create Baujat Plot
 cat("Creating Baujat plot for influence and heterogeneity analysis...\n")
 
 # Set up plotting parameters for Baujat plot
@@ -200,7 +201,7 @@ text(baujat_plot$x, baujat_plot$y,
      col = "#6C3BAA")
 
 
-# Step 10: Results Summary
+# Step 11: Results Summary
 cat("🎉 Analysis Complete! Here's what we found:\n\n")
 cat("📊 RESULTS SUMMARY:\n")
 cat("==================\n")
