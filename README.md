@@ -66,4 +66,4 @@ Copyright (c) 2025 Yi-Wen Tung, Ricardo Twumasi
 4. Borenstein, M., Hedges, L. V., Higgins, J. P., & Rothstein, H. R. (2009). Introduction to Meta-Analysis. John Wiley & Sons, Ltd.
 https://doi.org/10.1002/9780470743386
 
-5. Chinn S. (2000). A simple method for converting an odds ratio to effect size for use in meta-analysis. Statistics in medicine, 19(22), 3127–3131.
+5. Chinn S. (2000). A simple method for converting an odds ratio to effect size for use in meta-analysis. Statistics in medicine, 19(22), 3127–3131. https://doi.org/10.1002/1097-0258(20001130)19:22%3C3127::aid-sim784%3E3.0.co;2-m
