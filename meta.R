@@ -101,9 +101,9 @@ text(8, k + 2, "Estimates [95% CI]", pos = 2, font = 2)
 text(13, k + 2, "Risk of Bias", pos = 2, font = 2)
 
 # Add horizontal line under the plot area
-segments(sav$xlim[1], k-3, 20, k-3, lwd = 1)
+segments(sav$xlim[1], k-3, 13.5, k-3, lwd = 1)
 ### add horizontal line at the top
-segments(sav$xlim[1], k+1, 20, k+1, lwd=1)
+segments(sav$xlim[1], k+1, 13.5, k+1, lwd=1)
 
 # Step 7: Add Risk of Bias Indicators
 # Create risk of bias legend and indicators
