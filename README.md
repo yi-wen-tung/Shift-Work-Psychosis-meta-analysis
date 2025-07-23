@@ -49,7 +49,7 @@ Calculates the Q-statistic and I² values for heterogeneity
 
 ## AI Statement
 
-This code was edited with the assistance of Claude Sonnet 3.5 (Anthropic, San Francisco: CA)
+This code was edited with the assistance of Claude Sonnet 4 (Anthropic, San Francisco: CA)
 
 ## License
 
