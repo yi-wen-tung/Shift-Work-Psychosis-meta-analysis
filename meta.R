@@ -63,7 +63,27 @@ res <- rma(yi = yi,
 print(res)
 cat("\n")
 
-# Step 5: Create RevMan-Style Forest Plot
+# Step 5: Calculate Study Weights
+cat("Calculating study weights...\n")
+
+# Extract weights from the fitted model
+# These are the relative weights used in the random-effects model
+weights <- weights(res)
+
+# Convert to percentages and round to 1 decimal place
+weight_percent <- round(weights, 1)
+
+# Add weights to the data frame
+dat$weight <- weight_percent
+
+# Display weights
+cat("Study weights:\n")
+for(i in 1:nrow(dat)) {
+  cat(sprintf("%s: %.1f%%\n", dat$study_label[i], dat$weight[i]))
+}
+cat(sprintf("Total: %.1f%%\n\n", sum(weight_percent)))
+
+# Step 6: Create RevMan-Style Forest Plot
 cat("Creating publication-ready RevMan-style forest plot...\n")
 
 # Calculate the number of studies
@@ -78,8 +98,8 @@ sav <- forest(res,
               ylim = c(-1.25, k + 3),     
               at = c(-2, -1, 0, 1, 2),    # Tick marks on x-axis
               xlab = "",                   # We'll add this manually
-              ilab = cbind(dat$n),        # Total participants
-              ilab.xpos = c(-7),          # Position for participant counts
+              ilab = cbind(dat$n, dat$weight),        # Total participants
+              ilab.xpos = c(-7, -5),          # Position for participant counts
               ilab.pos = 2,               # Right-aligned
               cex = 0.9,                  # Text size
               header = FALSE,             # We'll create custom headers
@@ -91,12 +111,13 @@ sav <- forest(res,
               refline = 0,              # Reference line at 0
               digits = 2)               # Decimal places
 
-# Step 6: Add Custom Headers (RevMan Style)
+# Step 7: Add Custom Headers (RevMan Style)
 par(xpd = NA, font = 2, cex = 1)
 
 # Main headers
 text(-16, k + 2, "Study", pos = 4, font = 2)
 text(-7, k + 2, "n", pos = 2, font = 2)
+text(-4.25, k + 2, "Weight (%)", pos = 2, font = 2)
 text(8, k + 2, "Estimates [95% CI]", pos = 2, font = 2)
 text(13, k + 2, "Risk of Bias", pos = 2, font = 2)
 
@@ -105,7 +126,7 @@ segments(sav$xlim[1], k-3, 13.5, k-3, lwd = 1)
 ### add horizontal line at the top
 segments(sav$xlim[1], k+1, 13.5, k+1, lwd=1)
 
-# Step 7: Add Risk of Bias Indicators
+# Step 8: Add Risk of Bias Indicators
 # Create risk of bias legend and indicators
 risk_colors <- c("+" = "#00aa00", "-" = "#dd0000", "?" = "#ffaa00")
 risk_symbols <- c("+" = "+", "-" = "-", "?" = "?")
@@ -132,7 +153,7 @@ for (i in 1:k) {
   }
 }
 
-# Step 8: Add Summary Statistics and Labels
+# Step 9: Add Summary Statistics and Labels
 par(font = 1, cex = 0.85)
 
 # X-axis label
@@ -167,7 +188,7 @@ text(sav$xlim[1], -0.65, pos = 4,
 # Total participants
 text(sav$xlim[1], -0.15, pos = 4, paste("Total participants = ", sum(dat$n)))
 
-# Step 9: Add Risk of Bias Legend 🏷️
+# Step 10: Add Risk of Bias Legend 🏷️
 text(sav$xlim[1], -0.90, pos = 4, "Risk of bias legend", font = 2)
 legend_text <- c(
   "(A) Random sequence generation (selection bias)",
@@ -183,7 +204,7 @@ for (i in 1:length(legend_text)) {
   text(sav$xlim[1], -0.90 - (i * 0.2), pos = 4, legend_text[i], cex = 0.7)
 }
 
-# Step 10: Create Baujat Plot
+# Step 11: Create Baujat Plot
 cat("Creating Baujat plot for influence and heterogeneity analysis...\n")
 
 # Set up plotting parameters for Baujat plot
@@ -201,7 +222,7 @@ text(baujat_plot$x, baujat_plot$y,
      col = "#6C3BAA")
 
 
-# Step 11: Results Summary
+# Step 12: Results Summary
 cat("🎉 Analysis Complete! Here's what we found:\n\n")
 cat("📊 RESULTS SUMMARY:\n")
 cat("==================\n")
