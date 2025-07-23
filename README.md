@@ -35,7 +35,7 @@ meta.R: Conducts the main meta-analysis
 This script:
 
 Loads necessary packages
-Converst different effect size measures (Standardized Mean Difference and Odds Ratio) to Hedges' g 
+Converts different effect size measures (Standardized Mean Difference and Odds Ratio) to Hedges' g 
 Saves the data to a new CSV file
 
 2. Meta-Analysis (meta.R)
