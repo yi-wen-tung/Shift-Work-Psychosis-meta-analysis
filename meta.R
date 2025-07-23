@@ -70,8 +70,8 @@ cat("Calculating study weights...\n")
 # These are the relative weights used in the random-effects model
 weights <- weights(res)
 
-# Convert to percentages and round to 1 decimal place
-weight_percent <- round(weights, 1)
+# Convert to percentages and round to 0 decimal place
+weight_percent <- round(weights, 0)
 
 # Add weights to the data frame
 dat$weight <- weight_percent
@@ -221,6 +221,78 @@ text(baujat_plot$x, baujat_plot$y,
      font = 4,
      col = "#6C3BAA")
 
+# Step 11: Influence and Outlier Analysis
+cat("INFLUENCE AND OUTLIER ANALYSIS\n")
+cat("================================\n")
+# Calculate influence measures
+inf <- influence(res)
+
+# Display influence statistics
+cat("Influence Statistics Summary:\n")
+influence_df <- data.frame(
+  Study = dat$author,
+  Sample_Size = dat$n,
+  DFFITS = round(inf$inf$dffits, 3),
+  Cook_D = round(inf$inf$cook.d, 3), 
+  CovrRatio = round(inf$inf$cov.r, 3),
+  Tau2_del = round(inf$inf$tau2.del, 4),
+  QE_del = round(inf$inf$QE.del, 2),
+  Hat = round(inf$inf$hat, 3)
+)
+
+print(influence_df)
+cat("\n")
+
+# Identify potentially influential studies using common thresholds
+cat("INFLUENTIAL STUDY IDENTIFICATION\n")
+cat("------------------------------------\n")
+
+# Common thresholds for influence measures
+n_studies <- nrow(dat)
+dffits_threshold <- 2 * sqrt(1/n_studies)  # Threshold for DFFITS
+cooks_threshold <- qf(0.5, 1, n_studies-1)  # Threshold for Cook's D
+
+influential_studies <- which(
+  abs(inf$inf$dffits) > dffits_threshold | 
+    inf$inf$cook.d > cooks_threshold
+)
+
+cat(sprintf("DFFITS threshold: %.3f\n", dffits_threshold))
+cat(sprintf("Cook's D threshold: %.3f\n", cooks_threshold))
+
+if (length(influential_studies) > 0) {
+  cat("\nINFLUENTIAL STUDIES DETECTED:\n")
+  for (i in influential_studies) {
+    cat(sprintf("- %s (n=%d): DFFITS=%.3f, Cook's D=%.3f\n", 
+                dat$author[i], dat$n[i], inf$inf$dffits[i], inf$inf$cook.d[i]))
+  }
+} else {
+  cat("\nNo studies exceed conventional influence thresholds.\n")
+}
+cat("\n")
+
+# Outlier Analysis - Detect statistical outliers
+cat("OUTLIER ANALYSIS\n")
+cat("--------------------\n")
+
+# Calculate studentized residuals
+stud_resid <- rstudent(res)
+outlier_threshold <- qt(0.975, df = res$k - 2)  # 95% threshold
+
+outliers <- which(abs(stud_resid$z) > outlier_threshold)
+
+cat(sprintf("Studentized residual threshold (95%%): ±%.3f\n", outlier_threshold))
+
+if (length(outliers) > 0) {
+  cat("\nOUTLIERS DETECTED:\n")
+  for (i in outliers) {
+    cat(sprintf("- %s: Studentized residual = %.3f\n", 
+                dat$author[i], stud_resid$z[i]))
+  }
+} else {
+  cat("\nNo statistical outliers detected.\n")
+}
+cat("\n")
 
 # Step 12: Results Summary
 cat("🎉 Analysis Complete! Here's what we found:\n\n")
@@ -249,6 +321,52 @@ if (res$I2 > 75) {
 } else {
   cat("LOW heterogeneity - good consistency across studies.\n")
 }
+
+cat("\n")
+
+cat("📊INFLUENCE AND OUTLIER ANALYSIS SUMMARY:\n")
+cat("===============================\n")
+# Influence analysis summary
+cat("INFLUENCE ANALYSIS:\n")
+if (length(influential_studies) > 0) {
+  cat(sprintf("- %d potentially influential studies detected\n", length(influential_studies)))
+  cat(sprintf("- Most influential: %s (DFFITS = %.3f)\n", 
+              dat$author[which.max(abs(inf$inf$dffits))], 
+              max(abs(inf$inf$dffits))))
+} else {
+  cat("- No studies exceed conventional influence thresholds\n")
+}
+cat("\n")
+
+# Outlier analysis summary
+cat("OUTLIER ANALYSIS:\n")
+if (length(outliers) > 0) {
+  cat(sprintf("- %d statistical outliers detected\n", length(outliers)))
+  cat(sprintf("- Most extreme: %s (residual = %.3f)\n",
+              dat$author[which.max(abs(stud_resid$z))],
+              stud_resid$z[which.max(abs(stud_resid$z))]))
+} else {
+  cat("- No statistical outliers detected\n")
+}
+cat("\n")
+
+stability_score <- 0
+if (length(influential_studies) == 0) stability_score <- stability_score + 1
+if (length(outliers) == 0) stability_score <- stability_score + 1
+if (res$I2 < 75) stability_score <- stability_score + 1
+
+if (stability_score >= 2) {
+  cat("✅ Results appear ROBUST based on influence/outlier analysis\n")
+  cat("✅ No major concerns with individual study impact\n")
+} else {
+  cat("⚠️  Some concerns detected in influence/outlier analysis\n")
+  cat("⚠️  Consider additional sensitivity testing\n")
+}
+
+if (max(dat$n)/min(dat$n) > 100) {
+  cat("📌 Large sample size differences noted - dominant study effect possible\n")
+}
+
 
 cat("\n RevMan-style forest plot with risk of bias assessment created!\n")
 cat(" Tip: Save your plot using png() or pdf() for publication.\n")
