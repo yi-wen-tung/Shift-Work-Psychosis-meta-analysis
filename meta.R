@@ -63,7 +63,44 @@ res <- rma(yi = yi,
 print(res)
 cat("\n")
 
-# Step 5: Calculate Study Weights
+# Step 5: Calculate Prediction Intervals method proposed by IntHout et al. (2016)
+cat("Calculating prediction intervals...\n")
+
+# Prediction interval calculation
+if (res$k >= 3 && res$tau2 > 0) {
+  # Calculate prediction interval using the formula:
+  # PI = μ ± t(k-2) × √(τ² + SE²)
+  
+  # Degrees of freedom for prediction interval
+  df_pi <- res$k - 2
+  
+  # Standard error for prediction interval
+  se_pi <- sqrt(res$tau2 + res$se^2)
+  
+  # Critical t-value
+  t_crit <- qt(0.975, df_pi)
+  
+  # Prediction interval bounds
+  pi_lb <- res$beta - t_crit * se_pi
+  pi_ub <- res$beta + t_crit * se_pi
+  
+  cat(sprintf("Prediction interval: [%.3f, %.3f]\n", pi_lb, pi_ub))
+  cat(sprintf("Degrees of freedom for PI: %d\n", df_pi))
+  cat(sprintf("Standard error for PI: %.3f\n", se_pi))
+  
+  # Store PI results
+  has_pi <- TRUE
+  
+} else {
+  cat("Prediction interval not calculated (insufficient studies or τ² = 0)\n")
+  has_pi <- FALSE
+  pi_lb <- NA
+  pi_ub <- NA
+}
+
+cat("\n")
+
+# Step 6: Calculate Study Weights
 cat("Calculating study weights...\n")
 
 # Extract weights from the fitted model
@@ -83,7 +120,7 @@ for(i in 1:nrow(dat)) {
 }
 cat(sprintf("Total: %.1f%%\n\n", sum(weight_percent)))
 
-# Step 6: Create RevMan-Style Forest Plot
+# Step 7: Create RevMan-Style Forest Plot
 cat("Creating publication-ready RevMan-style forest plot...\n")
 
 # Calculate the number of studies
@@ -111,7 +148,7 @@ sav <- forest(res,
               refline = 0,              # Reference line at 0
               digits = 2)               # Decimal places
 
-# Step 7: Add Custom Headers (RevMan Style)
+# Step 8: Add Custom Headers (RevMan Style)
 par(xpd = NA, font = 2, cex = 1)
 
 # Main headers
@@ -126,7 +163,7 @@ segments(sav$xlim[1], k-3, 13.5, k-3, lwd = 1)
 ### add horizontal line at the top
 segments(sav$xlim[1], k+1, 13.5, k+1, lwd=1)
 
-# Step 8: Add Risk of Bias Indicators
+# Step 9: Add Risk of Bias Indicators
 # Create risk of bias legend and indicators
 risk_colors <- c("+" = "#00aa00", "-" = "#dd0000", "?" = "#ffaa00")
 risk_symbols <- c("+" = "+", "-" = "-", "?" = "?")
@@ -153,7 +190,7 @@ for (i in 1:k) {
   }
 }
 
-# Step 9: Add Summary Statistics and Labels
+# Step 10: Add Summary Statistics and Labels
 par(font = 1, cex = 0.85)
 
 # X-axis label
@@ -167,6 +204,9 @@ df <- res$k - 1
 Q_pval <- res$QEp
 t_stat <- res$zval
 overall_pval <- res$pval
+
+# Total participants
+text(sav$xlim[1], -0.15, pos = 4, paste("Total participants = ", sum(dat$n)))
 
 # Heterogeneity statistics
 text(sav$xlim[1], -0.40, pos = 4,
@@ -185,10 +225,8 @@ text(sav$xlim[1], -0.65, pos = 4,
                 list(t_val = round(t_stat, 2),
                      p_val = round(overall_pval, 3))))
 
-# Total participants
-text(sav$xlim[1], -0.15, pos = 4, paste("Total participants = ", sum(dat$n)))
 
-# Step 10: Add Risk of Bias Legend 🏷️
+# Step 11: Add Risk of Bias Legend 🏷️
 text(sav$xlim[1], -0.90, pos = 4, "Risk of bias legend", font = 2)
 legend_text <- c(
   "(A) Random sequence generation (selection bias)",
@@ -204,7 +242,7 @@ for (i in 1:length(legend_text)) {
   text(sav$xlim[1], -0.90 - (i * 0.2), pos = 4, legend_text[i], cex = 0.7)
 }
 
-# Step 11: Create Baujat Plot
+# Step 12: Create Baujat Plot
 cat("Creating Baujat plot for influence and heterogeneity analysis...\n")
 
 # Set up plotting parameters for Baujat plot
@@ -221,7 +259,7 @@ text(baujat_plot$x, baujat_plot$y,
      font = 4,
      col = "#6C3BAA")
 
-# Step 11: Influence and Outlier Analysis
+# Step 13: Influence and Outlier Analysis
 cat("INFLUENCE AND OUTLIER ANALYSIS\n")
 cat("================================\n")
 # Calculate influence measures
@@ -294,7 +332,7 @@ if (length(outliers) > 0) {
 }
 cat("\n")
 
-# Step 12: Results Summary
+# Step 14: Results Summary
 cat("🎉 Analysis Complete! Here's what we found:\n\n")
 cat("📊 RESULTS SUMMARY:\n")
 cat("==================\n")
