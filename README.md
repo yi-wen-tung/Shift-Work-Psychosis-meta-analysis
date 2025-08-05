@@ -46,7 +46,7 @@ Conducts a random-effects meta-analysis using rma function from metafor package
 Creates a forest plot displaying individual study effect sizes, the overall effect, and risk of bias assessments
 Generates a Baujat plot to help identify influential studies
 Conducts Influence and Outlier Analysis for sensetivity
-Calculates the Q-statistic and I² values for heterogeneity
+Calculates the Q-statistic, I² values and prediction interval for heterogeneity
 
 ## AI Statement
 
@@ -70,3 +70,5 @@ https://doi.org/10.1002/9780470743386
 4. Chinn S. (2000). A simple method for converting an odds ratio to effect size for use in meta-analysis. Statistics in medicine, 19(22), 3127–3131. https://doi.org/10.1002/1097-0258(20001130)19:22%3C3127::aid-sim784%3E3.0.co;2-m
 
 5. Viechtbauer, Wolfgang, and Mike Cheung. 2010. “Outlier and Influence Diagnostics for Meta-Analysis.” Research Synthesis Methods 1 (2): 112–25. https://onlinelibrary.wiley.com/doi/10.1002/jrsm.11
+
+6. Inthout, J., Ioannidis, J., Rovers, M., & Goeman, J. (2016). Plea for routinely presenting prediction intervals in meta-analysis. BMJ Open, 6:e010247. https://bmjopen.bmj.com/content/6/7/e010247
