@@ -9,7 +9,7 @@ This repository contains full R code for replicating our meta-analysis on the as
 
 ## Registration
 
-Full registration can be viewd on PROSPERO: [CRD420251082250](https://www.crd.york.ac.uk/PROSPERO/view/CRD420251082250)
+Full registration can be viewed on PROSPERO: [CRD420251082250](https://www.crd.york.ac.uk/PROSPERO/view/CRD420251082250)
 
 ## Contributors
 
