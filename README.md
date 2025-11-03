@@ -1,3 +1,8 @@
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17513167-blue.svg)](https://doi.org/10.5281/zenodo.17513167)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![R](https://img.shields.io/badge/R-4.5.1-blue.svg)](https://cran.r-project.org/)
+
+
 # Meta-Analysis code for the occupational sleep disruption and risk of psychosis
 
 This repository contains full R code for replicating our meta-analysis on the association between irregular work patterns and the risk of developing psychosis. employer discrimination towards individuals with psychosis.
