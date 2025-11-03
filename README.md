@@ -2,6 +2,8 @@
 
 This repository contains full R code for replicating our meta-analysis on the association between irregular work patterns and the risk of developing psychosis. employer discrimination towards individuals with psychosis.
 
+Full code can be cited here: [![DOI](https://zenodo.org/badge/1020831909.svg)](https://zenodo.org/badge/latestdoi/17513167)
+
 ## Registration
 
 Full registration can be viewd on PROSPERO: [CRD420251082250](https://www.crd.york.ac.uk/PROSPERO/view/CRD420251082250)
