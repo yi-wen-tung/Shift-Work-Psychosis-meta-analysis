@@ -212,7 +212,7 @@ text(sav$xlim[1], -0.15, pos = 4, paste("Total participants = ", sum(dat$n)))
 text(sav$xlim[1], -0.40, pos = 4,
      substitute(paste("Heterogeneity: ", tau^2, " = ", tau2_val, "; ",
                       "Chi"^2, " = ", Q_val, ", df = ", df_val,
-                      " (P = ", p_val, "); ", "I"^2, " = ", I2_val, "%"),
+                      " (", italic("p"), " = ", p_val, "); ", "I"^2, " = ", I2_val, "%"),
                 list(tau2_val = round(tau2, 2),
                      Q_val = round(Q_stat, 1),
                      df_val = df,
@@ -221,7 +221,7 @@ text(sav$xlim[1], -0.40, pos = 4,
 
 # Test for overall effect
 text(sav$xlim[1], -0.65, pos = 4,
-     substitute(paste("Test for overall effect: t = ", t_val, " (P = ", p_val, ")"),
+     substitute(paste("Test for overall effect: t = ", t_val, " (", italic("p"), " = ", p_val, ")"),
                 list(t_val = round(t_stat, 2),
                      p_val = round(overall_pval, 3))))
 
